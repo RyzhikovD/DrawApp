@@ -13,17 +13,22 @@ import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+import ru.sberbankmobile.drawapp.views.DrawView;
+
 public class MainActivity extends AppCompatActivity {
 
-    private int currentColor;
+    private int mCurrentColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        currentColor = getResources().getColor(R.color.colorAccent);
         final DrawView drawView = findViewById(R.id.draw_view);
+
+        mCurrentColor = getResources().getColor(R.color.colorAccent);
+        drawView.setColor(mCurrentColor);
+
         initButtons(drawView);
     }
 
@@ -32,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Button buttonPath = findViewById(R.id.button_path_view);
         Button buttonBox = findViewById(R.id.button_box_view);
         Button buttonLine = findViewById(R.id.button_line_view);
-        Button buttonColor = findViewById(R.id.button_set_color);
+        final Button buttonColor = findViewById(R.id.button_set_color);
 
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,32 +70,34 @@ public class MainActivity extends AppCompatActivity {
         buttonColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showColorPickerDialog(drawView);
+                showColorPickerDialog(drawView, buttonColor);
             }
         });
     }
 
-    private void showColorPickerDialog(final DrawView drawView) {
+    private void showColorPickerDialog(final DrawView drawView, final Button button) {
         ColorPickerDialogBuilder
                 .with(this)
-                .setTitle("Choose color")
-                .initialColor(currentColor)
+                .setTitle(getResources().getString(R.string.choose_color))
+                .initialColor(mCurrentColor)
                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                 .density(12)
                 .setOnColorSelectedListener(new OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int selectedColor) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.onColorSelected) + Integer.toHexString(selectedColor), Toast.LENGTH_SHORT).show();
+                        String color = getResources().getString(R.string.onColorSelected) + Integer.toHexString(selectedColor);
+                        Toast.makeText(getApplicationContext(), color, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setPositiveButton("ok", new ColorPickerClickListener() {
+                .setPositiveButton(getResources().getString(R.string.ok), new ColorPickerClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
                         drawView.setColor(selectedColor);
-                        currentColor = selectedColor;
+                        button.setTextColor(selectedColor);
+                        mCurrentColor = selectedColor;
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ru.sberbankmobile.drawapp.DrawView
+    <ru.sberbankmobile.drawapp.views.DrawView
         android:id="@+id/draw_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

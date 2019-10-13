@@ -6,4 +6,7 @@
     <string name="line">Line</string>
     <string name="color">Color</string>
     <string name="onColorSelected">onColorSelected: 0x</string>
+    <string name="choose_color">Choose color</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

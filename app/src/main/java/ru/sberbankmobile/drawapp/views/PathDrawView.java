@@ -1,7 +1,6 @@
-package ru.sberbankmobile.drawapp;
+package ru.sberbankmobile.drawapp.views;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -10,13 +9,17 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class PathDrawView extends View {
 
-    private Path mPath = new Path();
-    private Paint mDotPaint = new Paint();
-    private Paint mBackgroundPaint = new Paint();
-
     private DrawView mDrawView;
+
+    private HashMap<Path, Integer> mColoredPaths = new HashMap<>();
+    private Path mPath;
+    private Paint mPaint = new Paint();
 
     public PathDrawView(Context context) {
         this(context, null, new DrawView(context));
@@ -41,39 +44,40 @@ public class PathDrawView extends View {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                mPath = new Path();
+                mColoredPaths.put(mPath, mPaint.getColor());
                 mPath.moveTo(x, y);
                 return true;
             case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                mPath = null;
+                break;
             case MotionEvent.ACTION_MOVE:
                 mPath.lineTo(x, y);
+                mDrawView.invalidate();
                 break;
             default:
                 return super.onTouchEvent(event);
         }
 
-        mDrawView.invalidate();
         return true;
     }
 
     private void setUpPaint() {
-        mBackgroundPaint.setColor(Color.WHITE);
-
-        mDotPaint.setColor(Color.RED);
-        mDotPaint.setAntiAlias(true);
-        mDotPaint.setStrokeWidth(10f);
-        mDotPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setAntiAlias(true);
+        mPaint.setStrokeWidth(10f);
+        mPaint.setStyle(Paint.Style.STROKE);
     }
 
     public void clear() {
-        mPath.reset();
-        mDrawView.invalidate();
+        mColoredPaths.clear();
     }
 
     public Paint getPaint() {
-        return mDotPaint;
+        return mPaint;
     }
 
-    public Path getPath() {
-        return mPath;
+    public Set<Map.Entry<Path, Integer>> getPathSet() {
+        return mColoredPaths.entrySet();
     }
 }

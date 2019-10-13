@@ -1,7 +1,6 @@
-package ru.sberbankmobile.drawapp;
+package ru.sberbankmobile.drawapp.views;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -10,22 +9,25 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import ru.sberbankmobile.drawapp.figures.TwoPointFigure;
 
 public class TwoPointFigureDrawView extends View {
 
     private DrawView mDrawView;
 
-    private boolean isBoxType;
+    private boolean mIsBoxType;
 
     private Paint mBoxPaint = new Paint();
     private Paint mLinePaint = new Paint();
 
-    private List<TwoPointFigure> mBoxList = new ArrayList<>();
-    private List<TwoPointFigure> mLineList = new ArrayList<>();
-
     private TwoPointFigure mCurrentFigure;
+
+    private HashMap<TwoPointFigure, Integer> mColoredBoxes = new HashMap<>();
+    private HashMap<TwoPointFigure, Integer> mColoredLines = new HashMap<>();
 
     public TwoPointFigureDrawView(Context context) {
         this(context, null, new DrawView(context));
@@ -39,7 +41,6 @@ public class TwoPointFigureDrawView extends View {
         super(context, attrs);
 
         mDrawView = drawView;
-        setUpBoxPaint();
         setUpLinePaint();
     }
 
@@ -51,10 +52,10 @@ public class TwoPointFigureDrawView extends View {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mCurrentFigure = new TwoPointFigure(current);
-                if (isBoxType) {
-                    mBoxList.add(mCurrentFigure);
+                if (mIsBoxType) {
+                    mColoredBoxes.put(mCurrentFigure, mBoxPaint.getColor());
                 } else {
-                    mLineList.add(mCurrentFigure);
+                    mColoredLines.put(mCurrentFigure, mBoxPaint.getColor());
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -71,12 +72,7 @@ public class TwoPointFigureDrawView extends View {
         return true;
     }
 
-    private void setUpBoxPaint() {
-        mBoxPaint.setColor(Color.BLACK);
-    }
-
     private void setUpLinePaint() {
-        mLinePaint.setColor(Color.GREEN);
         mLinePaint.setStrokeWidth(10f);
     }
 
@@ -88,25 +84,24 @@ public class TwoPointFigureDrawView extends View {
         return mLinePaint;
     }
 
-    public List<TwoPointFigure> getBoxes() {
-        return mBoxList;
+    public Set<Map.Entry<TwoPointFigure, Integer>> getBoxSet() {
+        return mColoredBoxes.entrySet();
     }
 
-    public List<TwoPointFigure> getLines() {
-        return mLineList;
+    public Set<Map.Entry<TwoPointFigure, Integer>> getLineSet() {
+        return mColoredLines.entrySet();
     }
 
-    public void setBoxType() {
-        isBoxType = true;
+    public void selectBoxType() {
+        mIsBoxType = true;
     }
 
-    public void setLineType() {
-        isBoxType = false;
+    public void selectLineType() {
+        mIsBoxType = false;
     }
 
     public void clear() {
-        mBoxList.clear();
-        mLineList.clear();
-        mDrawView.invalidate();
+        mColoredBoxes.clear();
+        mColoredLines.clear();
     }
 }

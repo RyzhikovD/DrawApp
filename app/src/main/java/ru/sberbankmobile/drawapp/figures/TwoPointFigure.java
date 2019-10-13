@@ -1,4 +1,4 @@
-package ru.sberbankmobile.drawapp;
+package ru.sberbankmobile.drawapp.figures;
 
 import android.graphics.PointF;
 
