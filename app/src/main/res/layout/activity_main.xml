@@ -42,12 +42,22 @@
             android:layout_weight="1"
             android:text="@string/line" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/button_set_color"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/color" />
 
-    <Button
-        android:id="@+id/button_clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/clear" />
+        <Button
+            android:id="@+id/button_clear"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/clear" />
+
+    </LinearLayout>
 
 </LinearLayout>

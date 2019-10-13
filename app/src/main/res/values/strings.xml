@@ -4,4 +4,6 @@
     <string name="path">Path</string>
     <string name="twoPointFigure">Box</string>
     <string name="line">Line</string>
+    <string name="color">Color</string>
+    <string name="onColorSelected">onColorSelected: 0x</string>
 </resources>

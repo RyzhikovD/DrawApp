@@ -84,4 +84,10 @@ public class DrawView extends View {
         mPathDrawView.clear();
         mTwoPointFigureDrawView.clear();
     }
+
+    public void setColor(int color) {
+        mLinePaint.setColor(color);
+        mBoxPaint.setColor(color);
+        mPathPaint.setColor(color);
+    }
 }
