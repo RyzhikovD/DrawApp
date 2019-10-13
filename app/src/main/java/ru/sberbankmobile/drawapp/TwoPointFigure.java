@@ -2,12 +2,12 @@ package ru.sberbankmobile.drawapp;
 
 import android.graphics.PointF;
 
-public class Box {
+public class TwoPointFigure {
 
     private PointF mOrigin;
     private PointF mCurrent;
 
-    public Box(PointF origin) {
+    public TwoPointFigure(PointF origin) {
         mOrigin = origin;
         mCurrent = origin;
     }

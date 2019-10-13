@@ -18,8 +18,8 @@ public class LineDrawView extends View {
     private DrawView mDrawView;
 
     private Paint mLinePaint = new Paint();
-    private Box mCurrentBox;
-    private List<Box> mBoxList = new ArrayList<>();
+    private TwoPointFigure mCurrentTwoPointFigure;
+    private List<TwoPointFigure> mTwoPointFigureList = new ArrayList<>();
 
     public LineDrawView(Context context) {
         this(context, null, new DrawView(context));
@@ -43,25 +43,25 @@ public class LineDrawView extends View {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mCurrentBox = new Box(current);
-                mBoxList.add(mCurrentBox);
+                mCurrentTwoPointFigure = new TwoPointFigure(current);
+                mTwoPointFigureList.add(mCurrentTwoPointFigure);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mCurrentBox != null) {
-                    mCurrentBox.setCurrent(current);
+                if (mCurrentTwoPointFigure != null) {
+                    mCurrentTwoPointFigure.setCurrent(current);
                     mDrawView.invalidate();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                mCurrentBox = null;
+                mCurrentTwoPointFigure = null;
                 break;
         }
         return true;
     }
 
-    public List<Box> getLines() {
-        return mBoxList;
+    public List<TwoPointFigure> getLines() {
+        return mTwoPointFigureList;
     }
 
     private void setUpPaint() {
@@ -73,7 +73,7 @@ public class LineDrawView extends View {
     }
 
     public void clear() {
-        mBoxList.clear();
+        mTwoPointFigureList.clear();
         mDrawView.invalidate();
     }
 }
