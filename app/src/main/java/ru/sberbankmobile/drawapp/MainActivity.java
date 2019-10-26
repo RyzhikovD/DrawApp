@@ -13,6 +13,7 @@ import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+import ru.sberbankmobile.drawapp.figures.DrawType;
 import ru.sberbankmobile.drawapp.views.DrawView;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,21 +50,21 @@ public class MainActivity extends AppCompatActivity {
         buttonPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawView.selectPathView();
+                drawView.setDrawType(DrawType.Path);
             }
         });
 
         buttonBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawView.selectBoxView();
+                drawView.setDrawType(DrawType.Box);
             }
         });
 
         buttonLine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawView.selectLineView();
+                drawView.setDrawType(DrawType.Line);
             }
         });
 
