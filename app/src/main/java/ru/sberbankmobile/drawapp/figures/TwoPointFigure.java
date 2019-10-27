@@ -4,23 +4,31 @@ import android.graphics.PointF;
 
 public class TwoPointFigure {
 
-    private PointF mOrigin;
-    private PointF mCurrent;
+    private PointF mOrigin = new PointF();
+    private PointF mCurrent = new PointF();
 
     public TwoPointFigure(PointF origin) {
-        mOrigin = origin;
-        mCurrent = origin;
+        mOrigin.x = origin.x;
+        mOrigin.y = origin.y;
+        mCurrent.x = origin.x;
+        mCurrent.y = origin.y;
     }
 
-    public PointF getOrigin() {
-        return mOrigin;
+    public void setCurrent(PointF current) {
+        mCurrent.x = current.x;
+        mCurrent.y = current.y;
+    }
+
+    public void setOrigin(PointF origin) {
+        mOrigin.x = origin.x;
+        mOrigin.y = origin.y;
     }
 
     public PointF getCurrent() {
         return mCurrent;
     }
 
-    public void setCurrent(PointF current) {
-        mCurrent = current;
+    public PointF getOrigin() {
+        return mOrigin;
     }
 }

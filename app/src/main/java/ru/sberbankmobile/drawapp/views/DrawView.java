@@ -80,35 +80,8 @@ public class DrawView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (mCurrentType) {
-            case Box:
-            case Line:
-                PointF current = new PointF(event.getX(), event.getY());
-                int action = event.getAction();
-
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        mCurrentFigure = new TwoPointFigure(current);
-                        if (mCurrentType == DrawType.Box) {
-                            mColoredBoxes.put(mCurrentFigure, mBoxPaint.getColor());
-                        } else {
-                            mColoredLines.put(mCurrentFigure, mLinePaint.getColor());
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (mCurrentFigure != null) {
-                            mCurrentFigure.setCurrent(current);
-                            invalidate();
-                        }
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                    case MotionEvent.ACTION_UP:
-                        mCurrentFigure = null;
-                        break;
-                }
-                break;
-
             case Path:
-                action = event.getAction();
+                int action = event.getAction();
                 float x = event.getX();
                 float y = event.getY();
 
@@ -129,6 +102,46 @@ public class DrawView extends View {
                     default:
                         return super.onTouchEvent(event);
                 }
+                break;
+
+            case Box:
+            case Line:
+                PointF currentPoint = new PointF(event.getX(0), event.getY(0));
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mCurrentFigure = new TwoPointFigure(currentPoint);
+                        mCurrentFigure.setOrigin(currentPoint);
+                        if (mCurrentType == DrawType.Box) {
+                            mColoredBoxes.put(mCurrentFigure, mBoxPaint.getColor());
+                        } else {
+                            mColoredLines.put(mCurrentFigure, mLinePaint.getColor());
+                        }
+                        break;
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        int pointerId = event.getPointerId(event.getActionIndex());
+                        currentPoint.x = event.getX(pointerId);
+                        currentPoint.y = event.getY(pointerId);
+                        mCurrentFigure.setCurrent(currentPoint);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        for (int i = 0; i < event.getPointerCount(); i++) {
+                            int pId = event.getPointerId(i);
+                            currentPoint.x = event.getX(pId);
+                            currentPoint.y = event.getY(pId);
+                            if (pId == 0) {
+                                mCurrentFigure.setOrigin(currentPoint);
+                                mCurrentFigure.setOrigin(currentPoint);
+                            } else if (pId == 1) {
+                                mCurrentFigure.setCurrent(currentPoint);
+                                mCurrentFigure.setCurrent(currentPoint);
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mCurrentFigure = null;
+                        break;
+                }
+                invalidate();
                 break;
         }
         return true;
